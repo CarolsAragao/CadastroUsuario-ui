@@ -1,0 +1,123 @@
+<div class="card">
+    <p-toast />
+    <p-table [value]="usuarios" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'}">
+        <ng-template #header>
+            <tr>
+                <th style="width:20%">Nome</th>
+                <th style="width:20%">Sobrenome</th>
+                <th style="width:20%">Email</th>
+                <th style="width:20%">Data De Nascimento</th>
+                <th style="width:20%">Escolaridade</th>
+                <th style="width:20%"></th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-usuario let-editing="editing" let-ri="rowIndex">
+            <tr [pEditableRow]="usuario">
+                <td>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <input
+                                pInputText type="text"
+                                [(ngModel)]="usuario.nome" />
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{usuario.nome}}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <input
+                                pInputText type="text"
+                                [(ngModel)]="usuario.sobrenome"
+                                required />
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{usuario.sobrenome}}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <input
+                                pInputText type="text"
+                                [(ngModel)]="usuario.email"
+                                required />
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{usuario.email}}
+                        </ng-template>
+                    </p-cellEditor>
+                </td> 
+                <td>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <input
+                                pInputText type="text"
+                                [(ngModel)]="usuario.dataNascimento"
+                                required />
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{usuario.dataNascimento}}
+                        </ng-template>
+                    </p-cellEditor>
+                </td> 
+                <td>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <p-select
+                                [options]="statuses"
+                                appendTo="body"
+                                [(ngModel)]="usuario.escolaridade"
+                                [style]="{'width':'100%'}" />
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            <p-tag
+                                [value]="usuario.escolaridade" />
+                        </ng-template>
+                    </p-cellEditor>
+                </td>       
+                <td>
+            <div class="flex items-center justify-center gap-2">
+                <button                    
+                    pButton
+                    pRipple
+                    type="button"
+                    pInitEditableRow
+                    icon="pi pi-pencil"
+                    (click)="onRowEditInit(usuario)"
+                    text
+                    rounded
+                    severity="secondary"
+                ></button>
+                <button
+                    pButton
+                    pRipple
+                    type="button"
+                    pSaveEditableRow
+                    icon="pi pi-check"
+                    (click)="onRowEditSave(usuario)"
+                    text
+                    rounded
+                    severity="secondary"
+                ></button>
+                <button
+                    *ngIf="editing"
+                    pButton
+                    pRipple
+                    type="button"
+                    pCancelEditableRow
+                    icon="pi pi-times"
+                    (click)="onRowEditCancel(usuario, ri)"
+                    text
+                    rounded
+                    severity="secondary"
+                ></button>
+            </div>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
