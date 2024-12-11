@@ -1,0 +1,47 @@
+.container{
+    display: flex;
+    justify-content: center;    
+    height: 90vh;
+}
+
+.container-formulario{
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    padding: 50px;
+    border: 1px solid grey;
+    border-radius: 10px;
+    box-shadow: 4px 0.5px 2px 0.5px grey;
+}
+
+.field {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1rem;
+  }
+  
+  button {
+    width: 100px;
+  }
+
+  #escolaridade{
+    width: 62%;
+  }
+
+  .btn-salvar{
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+  }
+
+  .titulo-container{
+    display: flex;
+    justify-content: center;
+  }
+
+  .titulo-formulario{    
+    margin-bottom: 20px;
+  }
+ 

@@ -10,6 +10,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { Escolaridade, Usuario } from '../../core/models/usuarios/usuario';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UsuarioService } from '../../core/services/usuarios.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-table',
@@ -36,7 +37,12 @@ export class TableComponent {
     escolaridades: Escolaridade[] = [];
     usuarioClonado: { [s: string]: Usuario } = {};
     dropEscolaridade!: SelectItem[];
-    constructor(private messageService: MessageService, private usuarioService: UsuarioService) {}
+
+    constructor(
+                private messageService: MessageService, 
+                private usuarioService: UsuarioService,
+                private router: Router
+            ) {}
 
     async ngOnInit() {      
         this.usuarios = await this.usuarioService.Get();
@@ -68,5 +74,9 @@ export class TableComponent {
         this.usuarios[index] = this.usuarioClonado[usuario.id as string];
         delete this.usuarioClonado[usuario.id as string];
     }     
+
+    abreFormulario(){
+        this.router.navigate(["/Cadastro"])
+    }
     
 }
