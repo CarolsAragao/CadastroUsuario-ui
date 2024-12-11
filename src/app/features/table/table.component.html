@@ -60,7 +60,7 @@
                                 required />
                         </ng-template>
                         <ng-template pTemplate="output">
-                            {{usuario.dataNascimento}}
+                            {{usuario.dataNascimento | date:'dd/MM/yyyy' }}
                         </ng-template>
                     </p-cellEditor>
                 </td> 
@@ -68,14 +68,14 @@
                     <p-cellEditor>
                         <ng-template pTemplate="input">
                             <p-select
-                                [options]="statuses"
+                                [options]="dropEscolaridade"
                                 appendTo="body"
-                                [(ngModel)]="usuario.escolaridade"
+                                [(ngModel)]="usuario.escolaridadeid"
                                 [style]="{'width':'100%'}" />
                         </ng-template>
                         <ng-template pTemplate="output">
                             <p-tag
-                                [value]="usuario.escolaridade" />
+                                [value]="usuario.escolaridade.descricao" />
                         </ng-template>
                     </p-cellEditor>
                 </td>       

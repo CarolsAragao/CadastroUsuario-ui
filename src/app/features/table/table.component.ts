@@ -7,8 +7,9 @@ import { TagModule } from 'primeng/tag';
 import { SelectModule } from 'primeng/select';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { Usuario } from '../../core/models/usuarios/usuario';
+import { Escolaridade, Usuario } from '../../core/models/usuarios/usuario';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UsuarioService } from '../../core/services/usuarios.service';
 
 @Component({
   selector: 'app-table',
@@ -32,52 +33,40 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 })
 export class TableComponent {
     usuarios: Usuario[] = [];
-    clonedProducts: { [s: string]: Usuario } = {};
-    statuses!: SelectItem[];
-    constructor(private messageService: MessageService) {}
+    escolaridades: Escolaridade[] = [];
+    usuarioClonado: { [s: string]: Usuario } = {};
+    dropEscolaridade!: SelectItem[];
+    constructor(private messageService: MessageService, private usuarioService: UsuarioService) {}
 
-    ngOnInit() {
-        // this.productService.getProductsMini().then((data) => {
-        //     this.usuario = data;
-        // });
+    async ngOnInit() {      
+        this.usuarios = await this.usuarioService.Get();
 
-        this.statuses = [
-            { label: 'INFANTIL', value: 'INFANTIL' },
-            { label: 'FUNDAMENTAL', value: 'FUNDAMENTAL' }
-        ];
-
-        let teste = new Usuario();
-        teste.id = '1';
-        teste.nome = 'Vitor';
-        teste.sobrenome = 'Frankenstein';
-        teste.email = 'Frank@gmail.com';
-        teste.dataNascimento = new Date(2024,10,25);   
-        teste.escolaridade = this.statuses[0].value;  
-
-        this.usuarios.push(teste);
-
-        console.log('NgOnInit', this.usuarios);
-
-      
+        this.escolaridades = await this.usuarioService.GetEscolaridade();
+        this.dropEscolaridade = this.escolaridades.map(escolaridade => ({
+            label: escolaridade.descricao,
+            value: escolaridade.id
+          }));
     }
 
     onRowEditInit(usuario: Usuario) {
-        this.clonedProducts[usuario.id as string] = { ...usuario };
+        this.usuarioClonado[usuario.id as string] = { ...usuario };
     }
 
-    onRowEditSave(usuario: Usuario) {
+    async onRowEditSave(usuario: Usuario) {
         if (usuario.id) {
-            console.log('onRowEditSave', usuario);            
-            // delete this.clonedProducts[product.id as string];
+            await this.usuarioService.updateUsuario(usuario);
+            usuario.escolaridade = new Escolaridade();
+            delete this.usuarioClonado[usuario.id as string];
             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Product is updated' });
+            this.usuarios = await this.usuarioService.Get();
         } else {
             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid Price' });
         }
     }
 
     onRowEditCancel(usuario: Usuario, index: number) {
-        this.usuarios[index] = this.clonedProducts[usuario.id as string];
-        delete this.clonedProducts[usuario.id as string];
+        this.usuarios[index] = this.usuarioClonado[usuario.id as string];
+        delete this.usuarioClonado[usuario.id as string];
     }     
     
 }

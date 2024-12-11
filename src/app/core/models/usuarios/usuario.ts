@@ -4,5 +4,12 @@ export class Usuario {
     sobrenome = ''
     email = ''
     dataNascimento = new Date()
-    escolaridade = ''
+    escolaridadeId = ''
+    escolaridade = new Escolaridade()
+}
+
+export class Escolaridade
+{
+    id = ''
+    descricao = ''
 }
