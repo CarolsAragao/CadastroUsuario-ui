@@ -56,11 +56,9 @@
                 <td>
                     <p-cellEditor>
                         <ng-template pTemplate="input">
-                            <input
-                            pInputText type="text"
-                            [(ngModel)]="usuario.dataNascimento"
-                            required />
-                        </ng-template>
+                            <p-calendar [(ngModel)]="usuario.dataNascimento"                                        required>
+                            </p-calendar>
+                        </ng-template>                    
                         <ng-template pTemplate="output">
                             {{usuario.dataNascimento | date:'dd/MM/yyyy' }}
                         </ng-template>

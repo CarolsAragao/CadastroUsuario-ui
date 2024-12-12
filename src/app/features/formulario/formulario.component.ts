@@ -9,6 +9,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { UsuarioService } from '../../core/services/usuarios.service';
 import { ToastService } from '../../shared/toast/toast.service';
 import { Router } from '@angular/router';
+import { Utils } from '../../shared/utils/utils';
 
 @Component({
   selector: 'app-formulario',
@@ -48,19 +49,10 @@ export class FormularioComponent implements OnInit{
       escolaridade: ['', Validators.required]
     });
   }
-
-  validarDataNascimento(data: Date){
-    const dataComparar = new Date(data);
-    const hoje = new Date();
-
-    if (dataComparar.getTime() > hoje.getTime()) return false;
-    return true;
-  }
-
   async onSubmit() {   
     console.log('FORM', this.userForm.value);
     if (this.userForm.valid) {
-      if (!this.validarDataNascimento(this.userForm.value.dataNascimento)){
+      if (!Utils.validarDataNascimento(this.userForm.value.dataNascimento)){
         return this.toast.showError('Error!', 'Data de Nascimento inválida.')
       }    
 

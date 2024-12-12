@@ -12,6 +12,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UsuarioService } from '../../core/services/usuarios.service';
 import { Router } from '@angular/router';
 import { ToastService } from '../../shared/toast/toast.service';
+import { Utils } from '../../shared/utils/utils';
+import { CalendarModule } from 'primeng/calendar';
 
 @Component({
   selector: 'app-table',
@@ -27,7 +29,8 @@ import { ToastService } from '../../shared/toast/toast.service';
             FormsModule,
             ReactiveFormsModule,
             ButtonModule,
-            CommonModule
+            CommonModule,
+            CalendarModule
         ],
   providers: [MessageService],
   templateUrl: './table.component.html',
@@ -60,10 +63,28 @@ export class TableComponent {
         this.usuarioClonado[usuario.id as string] = { ...usuario };
     }
 
+    validaUsuario(usuario: Usuario) {
+        if (!Utils.validarDataNascimento(usuario.dataNascimento)){
+            this.toast.showError('Erro!', 'Data de Nascimento inválida!');
+            return false;
+        }
+
+        if(!Utils.validarEmail(usuario.email)){
+            this.toast.showError('Erro!', 'Email inválido!');
+            return false;
+        }
+        
+        return true;
+    }
+
     async onRowEditSave(usuario: Usuario) {
         if (usuario.id) {
+            if (!this.validaUsuario(usuario)) {
+                this.usuarios = await this.usuarioService.Get();
+                return;
+            } 
+                
             await this.usuarioService.update(usuario);
-            usuario.escolaridade = new Escolaridade();
             delete this.usuarioClonado[usuario.id as string];
             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Product is updated' });
             this.usuarios = await this.usuarioService.Get();
@@ -71,7 +92,6 @@ export class TableComponent {
             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid Price' });
         }
     }
-
     onRowEditCancel(usuario: Usuario, index: number) {
         this.usuarios[index] = this.usuarioClonado[usuario.id as string];
         delete this.usuarioClonado[usuario.id as string];
@@ -86,7 +106,6 @@ export class TableComponent {
             this.toast.showError('Erro', 'Não foi possível deletar o usuário.');
         }
     }
-
     abreFormulario(){
         this.router.navigate(["/Cadastro"])
     }
