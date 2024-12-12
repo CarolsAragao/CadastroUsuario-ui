@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import { ToastService } from '../../shared/toast/toast.service';
 import { Utils } from '../../shared/utils/utils';
 import { CalendarModule } from 'primeng/calendar';
+import { Dialog } from 'primeng/dialog';
 
 @Component({
   selector: 'app-table',
@@ -30,7 +31,8 @@ import { CalendarModule } from 'primeng/calendar';
             ReactiveFormsModule,
             ButtonModule,
             CommonModule,
-            CalendarModule
+            CalendarModule,
+            Dialog
         ],
   providers: [MessageService],
   templateUrl: './table.component.html',
@@ -39,8 +41,10 @@ import { CalendarModule } from 'primeng/calendar';
 export class TableComponent {
     usuarios: Usuario[] = [];
     escolaridades: Escolaridade[] = [];
+    idUsuarioExclusao = '';
     usuarioClonado: { [s: string]: Usuario } = {};
     dropEscolaridade!: SelectItem[];
+    visible = false;
 
     constructor(
                 private messageService: MessageService, 
@@ -97,17 +101,37 @@ export class TableComponent {
         delete this.usuarioClonado[usuario.id as string];
     }   
     
-    async onRowDelete(usuario: Usuario){        
-        const res = await this.usuarioService.delete(usuario);        
+    // async onRowDelete(usuario: Usuario){        
+    //     const res = await this.usuarioService.delete(usuario);        
+    //     if(res){
+    //         this.toast.showSuccess('Sucesso!', 'Usuário excluído com sucesso!');
+    //         this.usuarios = await this.usuarioService.Get();
+    //     } else {
+    //         this.toast.showError('Erro', 'Não foi possível deletar o usuário.');
+    //     }
+    // }
+    abreFormulario(){
+        this.router.navigate(["/Cadastro"])
+    }
+
+    showDialog(usuario: Usuario) {
+        this.idUsuarioExclusao = usuario.id;
+        this.visible = true;
+    }
+
+    async ExcluirUsuario() {
+        const res = await this.usuarioService.delete(this.idUsuarioExclusao);        
         if(res){
             this.toast.showSuccess('Sucesso!', 'Usuário excluído com sucesso!');
             this.usuarios = await this.usuarioService.Get();
         } else {
             this.toast.showError('Erro', 'Não foi possível deletar o usuário.');
         }
-    }
-    abreFormulario(){
-        this.router.navigate(["/Cadastro"])
+        this.visible = false;
     }
     
+    CancelarExclusao() {
+        this.idUsuarioExclusao = '';
+        this.visible = false;
+    }    
 }

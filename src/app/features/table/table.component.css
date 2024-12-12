@@ -10,3 +10,8 @@
     margin-bottom: 55px;
     
 }
+
+.btn-dialog{
+    display: flex;
+    gap: 10px;
+}

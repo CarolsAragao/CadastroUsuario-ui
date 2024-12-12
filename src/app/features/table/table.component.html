@@ -56,7 +56,7 @@
                 <td>
                     <p-cellEditor>
                         <ng-template pTemplate="input">
-                            <p-calendar [(ngModel)]="usuario.dataNascimento"                                        required>
+                            <p-calendar [(ngModel)]="usuario.dataNascimento" required>
                             </p-calendar>
                         </ng-template>                    
                         <ng-template pTemplate="output">
@@ -93,6 +93,7 @@
                         severity="secondary"
                         ></button>
                         <button
+                        *ngIf="editing"
                         pButton
                         pRipple
                         type="button"
@@ -115,12 +116,13 @@
                         rounded
                         severity="secondary"
                         ></button>
-                        <button                    
+                        <button
+                        *ngIf="!editing"                    
                         pButton
                         pRipple
                         type="button"
                         icon="pi pi-trash"
-                        (click)="onRowDelete(usuario)"
+                        (click)="showDialog(usuario)"
                         text
                         rounded
                         severity="secondary"
@@ -132,3 +134,10 @@
     </p-table>
 </div>
 </div>
+
+<p-dialog header="Deseja Excluir o Usuário?" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
+    <div class="btn-dialog">
+        <p-button label="Não" severity="secondary" (click)="CancelarExclusao()" />
+        <p-button label="Sim" severity="danger" (click)="ExcluirUsuario()" />
+    </div>
+</p-dialog>
