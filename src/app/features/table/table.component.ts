@@ -40,6 +40,7 @@ import { Dialog } from 'primeng/dialog';
 })
 export class TableComponent {
     usuarios: Usuario[] = [];
+    usuarioFilter: Usuario[] = [];
     escolaridades: Escolaridade[] = [];
     idUsuarioExclusao = '';
     usuarioClonado: { [s: string]: Usuario } = {};
@@ -53,14 +54,18 @@ export class TableComponent {
                 private toast: ToastService
             ) {}
 
-    async ngOnInit() {      
-        this.usuarios = await this.usuarioService.Get();
-
+    async ngOnInit() {             
+        await this.listar();
+        await this.listarEscolaridade();
+    }
+    
+    async listarEscolaridade() {
         this.escolaridades = await this.usuarioService.GetEscolaridade();
         this.dropEscolaridade = this.escolaridades.map(escolaridade => ({
             label: escolaridade.descricao,
             value: escolaridade.id
           }));
+        
     }
 
     onRowEditInit(usuario: Usuario) {
@@ -91,7 +96,7 @@ export class TableComponent {
             await this.usuarioService.update(usuario);
             delete this.usuarioClonado[usuario.id as string];
             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Product is updated' });
-            this.usuarios = await this.usuarioService.Get();
+            await this.listar();
         } else {
             this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid Price' });
         }
@@ -101,15 +106,6 @@ export class TableComponent {
         delete this.usuarioClonado[usuario.id as string];
     }   
     
-    // async onRowDelete(usuario: Usuario){        
-    //     const res = await this.usuarioService.delete(usuario);        
-    //     if(res){
-    //         this.toast.showSuccess('Sucesso!', 'Usuário excluído com sucesso!');
-    //         this.usuarios = await this.usuarioService.Get();
-    //     } else {
-    //         this.toast.showError('Erro', 'Não foi possível deletar o usuário.');
-    //     }
-    // }
     abreFormulario(){
         this.router.navigate(["/Cadastro"])
     }
@@ -123,7 +119,7 @@ export class TableComponent {
         const res = await this.usuarioService.delete(this.idUsuarioExclusao);        
         if(res){
             this.toast.showSuccess('Sucesso!', 'Usuário excluído com sucesso!');
-            this.usuarios = await this.usuarioService.Get();
+            await this.listar();
         } else {
             this.toast.showError('Erro', 'Não foi possível deletar o usuário.');
         }
@@ -133,5 +129,15 @@ export class TableComponent {
     CancelarExclusao() {
         this.idUsuarioExclusao = '';
         this.visible = false;
-    }    
+    }  
+
+    async listar() {
+        this.usuarios = await this.usuarioService.Get();
+        this.usuarioFilter = [...this.usuarios];
+    }
+    
+    filtrar(valor: Event) {
+        const filter = (valor.target as HTMLInputElement).value;
+        this.usuarioFilter =  this.usuarios.filter(usuario => usuario.nome.toUpperCase().includes(filter.toUpperCase()));   
+    }
 }
