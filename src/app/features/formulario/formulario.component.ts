@@ -71,6 +71,7 @@ export class FormularioComponent implements OnInit{
       }
     } else {
       this.toast.showError('Error!', 'Formulário Inválido.')
+      this.router.navigate(['']);
     }
   }
 
