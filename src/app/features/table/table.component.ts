@@ -60,7 +60,7 @@ export class TableComponent {
 
     async onRowEditSave(usuario: Usuario) {
         if (usuario.id) {
-            await this.usuarioService.updateUsuario(usuario);
+            await this.usuarioService.update(usuario);
             usuario.escolaridade = new Escolaridade();
             delete this.usuarioClonado[usuario.id as string];
             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Product is updated' });

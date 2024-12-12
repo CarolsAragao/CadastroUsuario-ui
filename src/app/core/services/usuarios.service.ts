@@ -22,8 +22,12 @@ export class UsuarioService {
     return firstValueFrom(this.http.get<Escolaridade[]>(`${this.apiUrl}Usuario/GetEscolaridade`))   
   }
 
-  updateUsuario(usuario: Usuario) {
-    return firstValueFrom(this.http.put<number>(`${this.apiUrl}Usuario`, usuario));
+  create(usuario: Usuario) {
+    return firstValueFrom(this.http.post<boolean>(`${this.apiUrl}Usuario`, usuario));
+  }
+
+  update(usuario: Usuario) {
+    return firstValueFrom(this.http.put<boolean>(`${this.apiUrl}Usuario`, usuario));
   }
 
 }
