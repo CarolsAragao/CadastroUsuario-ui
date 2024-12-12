@@ -3,7 +3,7 @@
         <p-button label="Cadastrar Novo" class="btn-cadastrar" (click)="abreFormulario()"></p-button>
         <div class="filtrar">
             <label>Pesquisar: </label>
-            <input class="input-filtrar" type="text" pInputText (input)="filtrar($event)" />
+            <input class="input-filtrar" placeholder="Digite o nome do usuario" type="text" pInputText (input)="filtrar($event)" />
         </div>
     </div>
     <div class="card">
@@ -97,6 +97,7 @@
                         text
                         rounded
                         severity="secondary"
+                        pTooltip="Editar"
                         ></button>
                         <button
                         *ngIf="editing"
@@ -109,6 +110,7 @@
                         text
                         rounded
                         severity="secondary"
+                        pTooltip="Salvar"
                         ></button>
                         <button
                         *ngIf="editing"
@@ -121,6 +123,7 @@
                         text
                         rounded
                         severity="secondary"
+                        pTooltip="Cancelar Edição"
                         ></button>
                         <button
                         *ngIf="!editing"                    
@@ -132,6 +135,7 @@
                         text
                         rounded
                         severity="secondary"
+                        pTooltip="Excluir"
                         ></button>
                     </div>
                 </td>

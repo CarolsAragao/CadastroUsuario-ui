@@ -15,6 +15,7 @@ import { ToastService } from '../../shared/toast/toast.service';
 import { Utils } from '../../shared/utils/utils';
 import { CalendarModule } from 'primeng/calendar';
 import { Dialog } from 'primeng/dialog';
+import { Tooltip } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-table',
@@ -32,7 +33,8 @@ import { Dialog } from 'primeng/dialog';
             ButtonModule,
             CommonModule,
             CalendarModule,
-            Dialog
+            Dialog,
+            Tooltip
         ],
   providers: [MessageService],
   templateUrl: './table.component.html',
