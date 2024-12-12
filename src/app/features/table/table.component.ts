@@ -11,6 +11,7 @@ import { Escolaridade, Usuario } from '../../core/models/usuarios/usuario';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UsuarioService } from '../../core/services/usuarios.service';
 import { Router } from '@angular/router';
+import { ToastService } from '../../shared/toast/toast.service';
 
 @Component({
   selector: 'app-table',
@@ -41,7 +42,8 @@ export class TableComponent {
     constructor(
                 private messageService: MessageService, 
                 private usuarioService: UsuarioService,
-                private router: Router
+                private router: Router,
+                private toast: ToastService
             ) {}
 
     async ngOnInit() {      
@@ -73,7 +75,17 @@ export class TableComponent {
     onRowEditCancel(usuario: Usuario, index: number) {
         this.usuarios[index] = this.usuarioClonado[usuario.id as string];
         delete this.usuarioClonado[usuario.id as string];
-    }     
+    }   
+    
+    async onRowDelete(usuario: Usuario){        
+        const res = await this.usuarioService.delete(usuario);        
+        if(res){
+            this.toast.showSuccess('Sucesso!', 'Usuário excluído com sucesso!');
+            this.usuarios = await this.usuarioService.Get();
+        } else {
+            this.toast.showError('Erro', 'Não foi possível deletar o usuário.');
+        }
+    }
 
     abreFormulario(){
         this.router.navigate(["/Cadastro"])

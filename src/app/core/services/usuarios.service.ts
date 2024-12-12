@@ -30,4 +30,7 @@ export class UsuarioService {
     return firstValueFrom(this.http.put<boolean>(`${this.apiUrl}Usuario`, usuario));
   }
 
+  delete(usuario: Usuario) {
+    return firstValueFrom(this.http.delete(`${this.apiUrl}Usuario/${usuario.id}`));
+  }
 }
